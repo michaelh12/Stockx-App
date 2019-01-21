@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native-elements';
+const numeral = require('numeral');
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { fetchPortfolio } from '../store/index';
@@ -40,11 +41,10 @@ class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text h4 style={{ flex: 1, color: 'blue', alignSelf: 'center' }}>
+        <Text h4 style={styles.screenHeader}>
           My Stocks Portfolio
         </Text>
         <PortfolioScreen data={this.props.portfolio} />
-        {/* <PortfolioList /> */}
       </View>
     );
   }
@@ -69,6 +69,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
     marginBottom: 20,
+  },
+  screenHeader: {
+    textAlign: 'center',
+    backgroundColor: 'antiquewhite',
+    marginTop: 15,
+    marginBottom: 15,
   },
   welcomeImage: {
     width: 100,

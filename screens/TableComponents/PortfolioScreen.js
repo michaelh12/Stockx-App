@@ -1,4 +1,5 @@
 import React from 'react';
+const formatter = require('numeral');
 import {
   Image,
   Platform,
@@ -28,29 +29,64 @@ export default class PortfolioScreen extends React.Component {
 
   render() {
     const { data } = this.props;
+    let sumCost = 0;
+    data.forEach(item => {
+      sumCost += item.startPrice * item.qty;
+    });
     return (
       <View style={styles.container}>
+        {/* header for list */}
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={styles.listHeader}>Symbol</Text>
+          <Text style={styles.listHeader}>Quantity</Text>
+          <Text style={styles.listHeader}>Price</Text>
+          <Text style={styles.listHeader}>Cost</Text>
+        </View>
         <FlatList
           data={data}
           keyExtractor={this._keyExtractor}
           renderItem={({ item }) => (
+            // container row-view
             <View style={styles.rowViewContainer}>
+              {/* symbol column view */}
               <View style={styles.columnView}>
-                <Text>{item.symbol}</Text>
+                <Text style={styles.alphaText}>
+                  {item.symbol.toUpperCase()}
+                </Text>
               </View>
-
+              {/* {qty column view} */}
               <View style={styles.columnView}>
-                <Text>{item.qty}</Text>
+                <Text style={styles.numericText}>
+                  {formatter(item.qty).format('0,0')}
+                </Text>
               </View>
+              {/* price column view */}
               <View style={styles.columnView}>
-                <Text>{`$ ${item.startPrice}`}</Text>
+                <Text style={styles.numericText}>
+                  {formatter(item.startPrice).format('$0,0.00')}
+                </Text>
               </View>
+              {/* cost column view */}
               <View style={styles.columnView}>
-                <Text>{`$ ${item.qty * item.startPrice}`}</Text>
+                <Text style={styles.numericText}>
+                  {formatter(item.qty * item.startPrice).format('$0,0.00')}
+                </Text>
               </View>
             </View>
           )}
         />
+        <View
+          style={{
+            flexDirection: 'row',
+            marginTop: 5,
+            justifyContent: 'flex-end',
+          }}
+        >
+          <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Total: </Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
+            {formatter(sumCost).format('$0,0.00')}
+          </Text>
+        </View>
       </View>
     );
   }
@@ -63,22 +99,36 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   columnView: {
-    borderColor: 'blue',
-    borderWidth: 1,
-    backgroundColor: 'cyan',
     fontWeight: 'bold',
     flex: 1,
     alignSelf: 'stretch',
+    justifyContent: 'flex-end',
+    textAlign: 'right',
   },
   rowViewContainer: {
     flex: 1,
     alignSelf: 'stretch',
     marginTop: 2,
     flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: 'gainsboro',
+  },
+  numericText: {
+    textAlign: 'right',
+    fontSize: 14,
+  },
+  listHeader: {
+    flex: 1,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+  alphaText: {
+    fontWeight: 'bold',
+    // color: '',
   },
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'azure',
     marginTop: 5,
   },
   developmentModeText: {

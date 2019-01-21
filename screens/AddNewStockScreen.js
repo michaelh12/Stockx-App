@@ -23,14 +23,13 @@ import store, { fetchPortfolio } from '../store/index';
 export default class AddNewStockScreen extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props.navigation);
-    this.state = { symbol: '', quantity: 0, price: 0 };
+    this.state = { symbol: null, quantity: null, price: null };
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   async onSubmit(e) {
-    console.log(this.state);
     await Axios.post('http://10.0.2.2:8080/api/portfolios/add', this.state);
+    this.setState({ symbol: null, quantity: null, price: null });
     store.dispatch(fetchPortfolio());
   }
 
@@ -42,9 +41,9 @@ export default class AddNewStockScreen extends React.Component {
         <FormLabel>Symbol</FormLabel>
         <FormInput
           placeholder="Please Enter Stock Symbol"
+          value={this.state.symbol}
           onChange={e => {
             this.setState({ symbol: e.nativeEvent.text });
-            console.log(this.state);
           }}
         />
         <Divider style={{ backgroundColor: 'grey' }} />
@@ -53,18 +52,18 @@ export default class AddNewStockScreen extends React.Component {
 
         <FormInput
           placeholder="Please Enter Quantity"
+          value={this.state.quantity}
           onChange={e => {
             this.setState({ quantity: e.nativeEvent.text });
-            console.log(this.state);
           }}
         />
         <Divider style={{ backgroundColor: 'grey' }} />
         <FormLabel>Price</FormLabel>
         <FormInput
           placeholder="Please Enter Price"
+          value={this.state.price}
           onChange={e => {
             this.setState({ price: e.nativeEvent.text });
-            console.log(this.state);
           }}
         />
         <Divider style={{ backgroundColor: 'grey' }} />

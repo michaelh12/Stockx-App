@@ -28,7 +28,7 @@ export const fetchPortfolio = () => async dispatch => {
     const portfolioRes = await axios.get('http://10.0.2.2:8080/api/portfolios');
     dispatch(setPortfolio(portfolioRes.data));
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };
 
