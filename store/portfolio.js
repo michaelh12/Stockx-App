@@ -6,6 +6,7 @@ import axios from 'axios';
 const GET_USER = 'GET_USER';
 const REMOVE_USER = 'REMOVE_USER';
 const SET_PORTFOLIO = 'SET_PORTFOLIO';
+const UPDATE_PORTFOLIO = 'UPDATE_PORTFOLIO';
 
 /**
  * INITIAL STATE
@@ -18,6 +19,7 @@ const defaultUser = { portfolio: [] };
 const getUser = user => ({ type: GET_USER, user });
 const removeUser = () => ({ type: REMOVE_USER });
 const setPortfolio = portfolio => ({ type: SET_PORTFOLIO, portfolio });
+const setUpdatePortfolio = portfolio => ({ type: UPDATE_PORTFOLIO, portfolio });
 
 /**
  * THUNK CREATORS
@@ -30,6 +32,13 @@ export const fetchPortfolio = () => async dispatch => {
   } catch (e) {
     console.error(e);
   }
+};
+
+export const updatePortfolio = () => async dispatch => {
+  setInterval(() => {
+    console.log('from updatePortfolio Thunk');
+    dispatch(setUpdatePortfolio());
+  }, 2000);
 };
 
 export const me = () => async dispatch => {
@@ -67,6 +76,15 @@ export const logout = () => async dispatch => {
   }
 };
 
+const setNewPrice = currentPortfolio => {
+  const newPortfolio = currentPortfolio.map(item => {
+    const newPrice = Number(item.currentPrice) - 0.02;
+    return { ...item, currentPrice: newPrice };
+  });
+  console.log(newPortfolio);
+  return newPortfolio;
+};
+
 /**
  * REDUCER
  */
@@ -74,6 +92,9 @@ export default function(state = defaultUser, action) {
   switch (action.type) {
     case SET_PORTFOLIO:
       return { ...state, portfolio: action.portfolio };
+    case UPDATE_PORTFOLIO:
+      console.log('----from update-----');
+      return { ...state, portfolio: setNewPrice(state.portfolio) };
     default:
       return state;
   }

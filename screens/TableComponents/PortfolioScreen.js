@@ -16,89 +16,20 @@ import { WebBrowser } from 'expo';
 
 import { MonoText } from '../../components/StyledText';
 
-export default class PortfolioScreen extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  _keyExtractor = (item, _) => item.id.toString();
-  _numberFormater = item => {
-    const number = item;
-    return number.toLocaleString();
-  };
-
-  render() {
-    const { data } = this.props;
-    let sumCost = 0;
-    data.forEach(item => {
-      sumCost += item.startPrice * item.qty;
-    });
-    return (
-      <View style={styles.container}>
-        {/* header for list */}
-        <View style={{ flexDirection: 'row' }}>
-          <Text style={styles.listHeader}>Symbol</Text>
-          <Text style={styles.listHeader}>Quantity</Text>
-          <Text style={styles.listHeader}>Price</Text>
-          <Text style={styles.listHeader}>Cost</Text>
-        </View>
-        <FlatList
-          data={data}
-          keyExtractor={this._keyExtractor}
-          renderItem={({ item }) => (
-            // container row-view
-            <View style={styles.rowViewContainer}>
-              {/* symbol column view */}
-              <View style={styles.columnView}>
-                <Text style={styles.alphaText}>
-                  {item.symbol.toUpperCase()}
-                </Text>
-              </View>
-              {/* {qty column view} */}
-              <View style={styles.columnView}>
-                <Text style={styles.numericText}>
-                  {formatter(item.qty).format('0,0')}
-                </Text>
-              </View>
-              {/* price column view */}
-              <View style={styles.columnView}>
-                <Text style={styles.numericText}>
-                  {formatter(item.startPrice).format('$0,0.00')}
-                </Text>
-              </View>
-              {/* cost column view */}
-              <View style={styles.columnView}>
-                <Text style={styles.numericText}>
-                  {formatter(item.qty * item.startPrice).format('$0,0.00')}
-                </Text>
-              </View>
-            </View>
-          )}
-        />
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: 5,
-            justifyContent: 'flex-end',
-          }}
-        >
-          <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Total: </Text>
-          <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
-            {formatter(sumCost).format('$0,0.00')}
-          </Text>
-        </View>
-      </View>
-    );
-  }
-}
-
 const styles = StyleSheet.create({
   flatView: {
     justifyContent: 'center',
     paddingTop: 30,
     borderRadius: 2,
   },
+  pnlPositive: {
+    color: 'green',
+  },
+  pnlNegative: {
+    color: 'red',
+  },
   columnView: {
+    width: 70,
     fontWeight: 'bold',
     flex: 1,
     alignSelf: 'stretch',
@@ -118,10 +49,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   listHeader: {
-    flex: 1,
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 16,
+    width: 80,
   },
   alphaText: {
     fontWeight: 'bold',
@@ -214,3 +145,97 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
 });
+
+export default class PortfolioScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.headerComponent = this.headerComponent.bind(this);
+  }
+
+  _keyExtractor = (item, _) => item.id.toString();
+  _numberFormater = item => {
+    const number = item;
+    return number.toLocaleString();
+  };
+  headerComponent = () => {
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.listHeader}>Symbol</Text>
+        <Text style={styles.listHeader}>Quantity</Text>
+        <Text style={styles.listHeader}>Open Price</Text>
+        <Text style={styles.listHeader}>Current Price</Text>
+        <Text style={styles.listHeader}>Profit/Loss</Text>
+        <Text style={styles.listHeader}>Cost</Text>
+      </View>
+    );
+  };
+  render() {
+    const { data } = this.props;
+    let sumCost = 0;
+    data.forEach(item => {
+      sumCost += item.startPrice * item.qty;
+    });
+
+    return (
+      <View>
+        <ScrollView horizontal={true}>
+          <FlatList
+            data={data}
+            ListHeaderComponent={this.headerComponent}
+            keyExtractor={this._keyExtractor}
+            renderItem={({ item }) => (
+              // container row-view
+              <View style={styles.rowViewContainer}>
+                {/* symbol column view */}
+                <View style={styles.columnView}>
+                  <Text style={styles.alphaText}>
+                    {item.symbol.toUpperCase()}
+                  </Text>
+                </View>
+                {/* {qty column view} */}
+                <View style={styles.columnView}>
+                  <Text style={styles.numericText}>
+                    {formatter(item.qty).format('0,0')}
+                  </Text>
+                </View>
+                {/* open price column view */}
+                <View style={styles.columnView}>
+                  <Text style={styles.numericText}>
+                    {formatter(item.startPrice).format('$0,0.00')}
+                  </Text>
+                </View>
+                {/* current price column view */}
+                <View style={styles.columnView}>
+                  <Text style={styles.numericText}>
+                    {formatter(item.currentPrice).format('$0,0.00')}
+                  </Text>
+                </View>
+                {/* P/L  column view */}
+                <View style={styles.columnView}>
+                  <Text
+                    style={[
+                      styles.numericText,
+                      (item.currentPrice - item.startPrice) * item.qty >= 0
+                        ? styles.pnlPositive
+                        : styles.pnlNegative,
+                    ]}
+                  >
+                    {formatter(
+                      (item.currentPrice - item.startPrice) * item.qty
+                    ).format('$0,0.00')}
+                  </Text>
+                </View>
+                {/* cost column view */}
+                <View style={styles.columnView}>
+                  <Text style={styles.numericText}>
+                    {formatter(item.qty * item.currentPrice).format('$0,0.00')}
+                  </Text>
+                </View>
+              </View>
+            )}
+          />
+        </ScrollView>
+      </View>
+    );
+  }
+}

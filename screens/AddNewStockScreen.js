@@ -4,7 +4,6 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
   FlatList,
@@ -16,6 +15,7 @@ import {
   FormValidationMessage,
   Button,
   Divider,
+  Text,
 } from 'react-native-elements';
 import Axios from 'axios';
 import store, { fetchPortfolio } from '../store/index';
@@ -26,6 +26,18 @@ export default class AddNewStockScreen extends React.Component {
     this.state = { symbol: null, quantity: null, price: null };
     this.onSubmit = this.onSubmit.bind(this);
   }
+  static navigationOptions = {
+    title: 'Welcome To $toX',
+    // header: null,
+    headerStyle: {
+      backgroundColor: '#f4511e',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      fontSize: 25,
+    },
+  };
 
   async onSubmit(e) {
     await Axios.post('http://10.0.2.2:8080/api/portfolios/add', this.state);
@@ -38,6 +50,16 @@ export default class AddNewStockScreen extends React.Component {
 
     return (
       <View style={styles.container}>
+        <Text style={{ textAlign: 'center' }} h4>
+          Add New Stock
+        </Text>
+        <Image
+          style={{ width: 450, height: 200 }}
+          source={{
+            uri:
+              'https://yw553ftvhw1iqegz29fycoyw-wpengine.netdna-ssl.com/wp-content/uploads/2016/06/GettyImages-488153381-min.jpg',
+          }}
+        />
         <FormLabel>Symbol</FormLabel>
         <FormInput
           placeholder="Please Enter Stock Symbol"
@@ -105,7 +127,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'floralwhite',
     marginTop: 5,
   },
   developmentModeText: {
