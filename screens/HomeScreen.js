@@ -38,7 +38,7 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     this.props.fetchPortfolio();
-    // this.props.updatePortfolio();
+    this.props.updatePortfolio();
   }
 
   render() {

@@ -13,7 +13,10 @@
   "dependencies": {
     "@expo/samples": "2.1.1",
     "axios": "^0.18.0",
+    "es6-promise": "^4.2.5",
     "expo": "^32.0.0",
+    "iex-api": "0.0.3",
+    "isomorphic-fetch": "^2.2.1",
     "numeral": "^2.0.6",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",

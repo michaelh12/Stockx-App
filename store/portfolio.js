@@ -39,6 +39,7 @@ export const updatePortfolio = () => async dispatch => {
     console.log('from updatePortfolio Thunk');
     dispatch(setUpdatePortfolio());
   }, 2000);
+  // dispatch(setUpdatePortfolio());
 };
 
 export const me = () => async dispatch => {
@@ -77,11 +78,35 @@ export const logout = () => async dispatch => {
 };
 
 const setNewPrice = currentPortfolio => {
+  // let latestPrices;
+
+  // axios
+  //   .get(`https://api.iextrading.com/1.0/stock/market/batch`, {
+  //     params: {
+  //       symbols: currentPortfolio
+  //         .map(item => {
+  //           return item.symbol;
+  //         })
+  //         .join(','),
+  //       types: 'price',
+  //     },
+  //   })
+  //   .then(res => {
+  //     currentPortfolio.map(item => {
+  //       console.log(latestPrices);
+  //       let newPrice = latestPrices[item.symbol]
+  //         ? latestPrices[item.symbol].price
+  //         : item.currentPrice;
+  //       return { ...item, currentPrice: Number(newPrice) };
+  //     });
+  //   });
+  // console.log(latestPrices);
+  // return;
+
   const newPortfolio = currentPortfolio.map(item => {
     const newPrice = Number(item.currentPrice) - 0.02;
     return { ...item, currentPrice: newPrice };
   });
-  console.log(newPortfolio);
   return newPortfolio;
 };
 
@@ -93,8 +118,11 @@ export default function(state = defaultUser, action) {
     case SET_PORTFOLIO:
       return { ...state, portfolio: action.portfolio };
     case UPDATE_PORTFOLIO:
-      console.log('----from update-----');
+      // console.log(setNewPrice(state));
+      // console.log('----from update-----');
       return { ...state, portfolio: setNewPrice(state.portfolio) };
+
+    // return state;
     default:
       return state;
   }

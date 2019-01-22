@@ -1,5 +1,6 @@
 import React from 'react';
 const formatter = require('numeral');
+
 import {
   Image,
   Platform,
@@ -15,6 +16,7 @@ import { PricingCard } from 'react-native-elements';
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../../components/StyledText';
+import Axios from 'axios';
 
 const styles = StyleSheet.create({
   flatView: {
@@ -171,10 +173,10 @@ export default class PortfolioScreen extends React.Component {
   };
   render() {
     const { data } = this.props;
-    let sumCost = 0;
-    data.forEach(item => {
-      sumCost += item.startPrice * item.qty;
-    });
+    // let sumCost = 0;
+    // data.forEach(item => {
+    //   sumCost += item.startPrice * item.qty;
+    // });
 
     return (
       <View>

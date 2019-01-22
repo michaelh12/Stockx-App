@@ -5,9 +5,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import portfolio from './portfolio';
 
 const reducer = combineReducers({ portfolio });
-const middleware = composeWithDevTools(
-  applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
-);
+// const middleware = composeWithDevTools(
+//   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
+// );
+
+const middleware = applyMiddleware(thunkMiddleware);
+
 const store = createStore(reducer, middleware);
 
 export default store;
