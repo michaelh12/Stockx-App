@@ -1,0 +1,47 @@
+<ScrollView horizontal={true}>
+          <FlatList
+            data={data}
+            keyExtractor={this._keyExtractor}
+            renderItem={({ item }) => (
+              // container row-view
+              <View style={styles.rowViewContainer}>
+                {/* symbol column view */}
+                <View style={styles.columnView}>
+                  <Text style={styles.alphaText}>
+                    {item.symbol.toUpperCase()}
+                  </Text>
+                </View>
+                {/* {qty column view} */}
+                <View style={styles.columnView}>
+                  <Text style={styles.numericText}>
+                    {formatter(item.qty).format('0,0')}
+                  </Text>
+                </View>
+                {/* open price column view */}
+                <View style={styles.columnView}>
+                  <Text style={styles.numericText}>
+                    {formatter(item.startPrice).format('$0,0.00')}
+                  </Text>
+                </View>
+                {/* current price column view */}
+                <View style={styles.columnView}>
+                  <Text style={styles.numericText}>
+                    {formatter(item.startPrice).format('$0,0.00')}
+                  </Text>
+                </View>
+                {/* P/L  column view */}
+                <View style={styles.columnView}>
+                  <Text style={styles.numericText}>
+                    {formatter(item.startPrice).format('$0,0.00')}
+                  </Text>
+                </View>
+                {/* cost column view */}
+                <View style={styles.columnView}>
+                  <Text style={styles.numericText}>
+                    {formatter(item.qty * item.startPrice).format('$0,0.00')}
+                  </Text>
+                </View>
+              </View>
+            )}
+          />
+        </ScrollView>

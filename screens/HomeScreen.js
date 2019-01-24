@@ -21,7 +21,9 @@ import { MonoText } from '../components/StyledText';
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = { userPortfolio: [] };
+    // this.state = { portfolio: [...props.portfolio] };
+    // this.updatePortfolio = props.updatePortfolio.bind(this);
+    console.log(this.props.portfolio);
   }
   static navigationOptions = {
     title: 'Welcome To $toX',
@@ -37,11 +39,23 @@ class HomeScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.props.fetchPortfolio();
-    this.props.updatePortfolio();
+    // this.props.fetchPortfolio();
+    // this.props.updatePortfolio(this.props.portfolio);
+    // console.log(this.props.portfolio);
+    setInterval(() => {
+      this.props.fetchPortfolio();
+    }, 5000);
+
+    // await this.props.updatePortfolio(this.props.portfolio);
   }
 
   render() {
+    // this.state
+    //   ? setInterval(function() {
+    //       updatePortfolio(this.state.portfolio);
+    //     }, 1000)
+    //   : console.log('state still empty');
+
     return (
       <View style={styles.container}>
         <View style={{ alignItems: 'stretch', flexDirection: 'column' }}>
